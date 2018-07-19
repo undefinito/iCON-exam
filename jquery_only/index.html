@@ -93,6 +93,57 @@
     </div>
   </div>
 
+  <div id="info_modal" class="modal fade" data-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title">
+            <i class="fa fa-user"></i>
+            User Info
+          </h5>
+          <button data-dismiss="modal" class="close">
+            <i class="fa fa-close"></i>
+          </button>
+          <span data-loading="modal" class="float-right">
+            <i class="fa fa-circle-o-notch fa-spin d-none"></i>
+          </span>
+        </div>
+        <div class="modal-body">
+          <h4 data-loading="info" class="text-center">Loading...</h4>
+          <div data-details class="media d-none">
+            <img data-avatar class="mr-3" alt="User image">
+            <div class="media-body">
+              <h5 class="mt-0">
+                <span data-firstname></span>
+                <span data-lastname></span>
+              </h5>
+              <h4 data-done class="text-danger d-none">Deleted.</h4>
+              <div data-confirm class="input-group d-none">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><b>Delete?</b></span>
+                  <button data-proceed="yes" data-id type="button" class="btn btn-success">
+                    <i class="fa fa-check"></i>
+                    Yes
+                  </button>
+                </div>
+                <div class="input-group-append">
+                  <button data-proceed="no" data-id type="button" class="btn btn-danger">
+                    <i class="fa fa-remove"></i>
+                    No
+                  </button>
+                </div>
+              </div>
+              <button data-delete data-id type="button" class="btn btn-danger">
+                <i class="fa fa-trash-o"></i>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="static/js/jquery-3.3.1.min.js"></script>
   <script src="static/js/bootstrap.bundle.min.js"></script>
   <script src="static/js/page.js"></script>

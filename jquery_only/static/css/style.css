@@ -16,7 +16,7 @@
 
 [data-users] [data-avatar] {
   border-radius: 50px !important;
-  width: 2em;
+  width: 2.5em;
 }
 
 @media screen and (max-width: 768px) {
