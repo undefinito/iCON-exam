@@ -1,4 +1,5 @@
 var HOST = "https://reqres.in"
+var $li = null
 
 function formatToLi(data) {
 
@@ -7,17 +8,30 @@ function formatToLi(data) {
     return '<li class="list-group-item d-none">No items on list.</li>'
   }
 
-  var list_html = '';
+  var list_html = ''
   for (var i = 0; i < data.length; i++) {
-    list_html += '<li class="list-group-item">';
-    list_html += data[i].name;
-    list_html += '</li>';
+    // list_html += '<li class="list-group-item">'
+    // list_html += data[i].name
+    // list_html += '</li>'
+
+    var $temp = $li.clone()
+    $temp.find('[data-head]').text(data[i].name)
+    $temp.find('[data-year]').text(data[i].year)
+    $temp.find('[data-pantone]').text(data[i].pantone_value)
+
+    list_html += $temp.get(0).outerHTML
   }
 
   return list_html
 }
 
 $(document).ready(function() {
+
+  // GET list item html and place into variable
+  $.get('html/list_item.html')
+    .done(function(result) {
+      $li = $(result)
+    })
 
   // GET users (for horizontal list)
   $.ajax({
@@ -43,9 +57,7 @@ $(document).ready(function() {
   .done(function(result) {
     if(Array.isArray(result.data))
     {
-      setTimeout(()=>{
-        $('#list').html(formatToLi(result.data))
-      },1000)
+      $('#list').html(formatToLi(result.data))
     }
   })
   .fail(function(a,b,c) {
