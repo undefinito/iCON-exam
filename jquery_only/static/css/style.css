@@ -1,5 +1,9 @@
+.clickable {
+  cursor: pointer;
+}
+
 .main.card {
-  min-height: 20em;
+  min-height: 50em;
 }
 
 [data-users] {
@@ -7,10 +11,17 @@
   white-space: nowrap;
 }
 [data-users] > *{
-  width: 33%;
+  width: 25%;
 }
 
 [data-users] [data-avatar] {
   border-radius: 50px !important;
-  width: 5em;
+  width: 2em;
+}
+
+@media screen and (max-width: 768px) {
+
+  [data-users] > *{
+    width: 70%;
+  }
 }

@@ -2,6 +2,15 @@ var HOST = "https://reqres.in"
 var $li = null
 var $card = null
 var users = []
+var user_total = 0
+var item_total = 0
+var PER_PAGE_V = 7
+var PER_PAGE_H = 5
+var current_page_v = 0
+
+// list is loading flags (to prevent duplicates)
+var v_loading = false
+var h_loading = false
 
 function formatToLi(data) {
 
@@ -31,7 +40,7 @@ function formatToLi(data) {
     $temp.find('[data-pantone]').text(data[i].pantone_value)
 
     // add users html
-    // $temp.find('[data-users]').html(users_html)
+    $temp.find('[data-users]').html(users_html)
 
     list_html += $temp.get(0).outerHTML
   }
@@ -51,35 +60,50 @@ function renderVList(data,is_append,cb) {
     data: data,
     beforeSend: function() {
       $('[data-loading="list"]').removeClass('d-none')
+      // vertical list is loading flag
+      v_loading = true
     },
   })
   .always(function() {
     $('[data-loading="list"]').addClass('d-none')
   })
   .done(function(result) {
+
+    item_total = result.total
+    total_pages_v = result.total_pages
+
     if(Array.isArray(result.data))
     {
       $('#list')[is_append ? 'append' : 'html'](formatToLi(result.data))
     }
-    typeof cb === 'function' ? cb() : null
+    // save current page
+    current_page_v = result.page
 
-
+    typeof cb === 'function' ? cb(result.page) : null
   })
   .fail(function(a,b,c) {
 
     $('#list').html('<li class="list-group-item">No items in list.</li>')
     console.log(a.status)
   })
+  .always(function() {
+    v_loading = false
+  })
 }
 
-// GET list item html
-$.get('html/list_item.html')
-  .done(function(result) {
-    $li = $(result)
-  })
-  .fail(function() {
-    // TODO handler of error
-  })
+// GET users (for horizontal list)
+$.ajax({
+  url: HOST+'/api/users',
+  method: 'GET',
+  dataType: 'json',
+  data: {
+    per_page: PER_PAGE_H
+  }
+})
+.done(function(result) {
+  users = result.data
+  user_total = result.total
+})
 
 // GET horizontal list item html
 $.get('html/user_card.html')
@@ -90,28 +114,33 @@ $.get('html/user_card.html')
     // TODO handler of error
   })
 
+// GET list item html
+$.get('html/list_item.html')
+  .done(function(result) {
+    $li = $(result)
+  })
+  .fail(function() {
+    // TODO handler of error
+  })
+
 $(document).ready(function() {
 
-  // GET users (for horizontal list)
-  $.ajax({
-    url: HOST+'/api/users',
-    method: 'GET',
-    dataType: 'json',
-  })
-  .done(function(result) {
-    console.log(result)
+  // get initial page load (items per page dependent on PER_PAGE_V)
+  renderVList({per_page: PER_PAGE_V})
 
-    users = result.data
-  })
+  $(document).scroll(function(){
+    console.log('list scroll')
 
-  renderVList(null,false,function() {
+    // if at the bottom of the page
+    if(($(window).scrollTop() + $(window).height() + 50) >= $(document).height()) {
 
-    renderVList({page: 2}, true, function() {
-      console.log($(document).height() - $('#main_container').height())
-
-    })
-
-    console.log($(document).height() - $('#main_container').height())
+      // if there are still other pages left
+      // and the list is not currently loading
+      if(current_page_v < total_pages_v && !v_loading)
+      {
+        renderVList({per_page: PER_PAGE_V, page: current_page_v+1},true)
+      }
+    }
   })
 
   $('#add_modal').on('hide.bs.modal', function() {
@@ -148,9 +177,6 @@ $(document).ready(function() {
           form_obj[form_raw[i].name] = form_raw[i].value
       }
     }
-
-    console.log('raw:',form_raw)
-    console.log('obj:',form_obj)
 
     if(!form_obj.name || !form_obj.job)
     {
