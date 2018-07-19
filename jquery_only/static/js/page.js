@@ -99,7 +99,6 @@ function renderVList(data,is_append,cb) {
   .fail(function(a,b,c) {
 
     $('#list').html('<li class="list-group-item">No items in list.</li>')
-    console.log(a.status)
   })
   .always(function() {
     v_loading = false
@@ -241,7 +240,6 @@ $(document).ready(function() {
   $('.main.card').on('click', '[data-users] [data-info]', function(){
     var id = $(this).attr('data-id')
 
-    console.log('id:',id)
 
     $.ajax({
       url: HOST+'/api/users/'+id,
@@ -278,7 +276,6 @@ $(document).ready(function() {
     var proceed = $(this).attr('data-proceed')
     var id = $(this).attr('data-id')
 
-    console.log(id)
     if(!id)
     {
       return false
