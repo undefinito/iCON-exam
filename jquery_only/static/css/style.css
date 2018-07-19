@@ -1,3 +1,16 @@
 .main.card {
   min-height: 20em;
 }
+
+[data-users] {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+[data-users] > *{
+  width: 33%;
+}
+
+[data-users] [data-avatar] {
+  border-radius: 50px !important;
+  width: 5em;
+}

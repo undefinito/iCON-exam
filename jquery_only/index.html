@@ -11,12 +11,33 @@
   <link rel="stylesheet" type="text/css" href="static/css/style.css">
 </head>
 <body class="bg-light">
-  <div class="container mt-4 pb-4">
+  <div id="main_container" class="container mt-5 pb-4">
+
+    <div data-alert="success" class="alert alert-success d-none">
+      <h4>
+        <i class="fa fa-check"></i>
+        User added.
+      </h4>
+      <button type="button" class="close"><i class="fa fa-close"></i></button>
+    </div>
+    <div data-alert="danger" class="alert alert-danger d-none">
+      <h4>
+        <i class="fa fa-exclamation-circle"></i>
+        An error occurred.
+      </h4>
+      <button type="button" class="close"><i class="fa fa-close"></i></button>
+    </div>
 
     <div class="card main">
+      <div class="card-header">
+        <h4>
+          List
+          <i data-loading="list" class="fa fa-circle-o-notch fa-spin float-right d-none"></i>
+        </h4>
+      </div>
       <div class="card-body">
         <ul id="list" class="list-group">
-          <li class="list-group-item d-none loading">Loading...</li>
+          <li class="list-group-item">No items in list.</li>
         </ul>
       </div>
     </div>
@@ -24,14 +45,47 @@
   </div>
   <!-- container -->
 
-  <div id="add_modal" class="modal">
+  <div id="add_modal" class="modal fade" data-backdrop="static">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add User</h5>
+        <div class="modal-header bg-light">
+          <h5 class="modal-title">
+            <i class="fa fa-user"></i>
+            Add User
+          </h5>
+          <button data-dismiss="modal" class="close">
+            <i class="fa fa-close"></i>
+          </button>
+          <span data-loading="modal" class="float-right">
+            <i class="fa fa-circle-o-notch fa-spin d-none"></i>
+          </span>
         </div>
         <div class="modal-body">
-          asfasfas
+          <form id="add_form" class="form-horizontal">
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Name</label>
+              <div class="col-sm-10">
+                <input type="text" name="name" class="form-control" />
+                <div class="invalid-feedback">
+                  Please provide a <b>name</b>.
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Job</label>
+              <div class="col-sm-10">
+                <input type="text" name="job" class="form-control" />
+                <div class="invalid-feedback">
+                  Please provide a <b>job</b>.
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer bg-light">
+          <button id="submit_add" type="button" class="btn btn-primary">
+            Submit
+          </button>
         </div>
       </div>
     </div>
