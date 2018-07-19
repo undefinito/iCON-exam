@@ -121,11 +121,19 @@ $(document).ready(function() {
     $('#add_form').find('input[name]').removeClass('is-invalid')
   })
 
+  // if input is not blank then remove indicator
   $('#add_form').find('input[name]').on('change', function() {
     var val = $(this).val()
     $(this)[val ? 'removeClass' : 'addClass']('is-invalid')
   })
 
+  // custom dismiss button of alert
+  $('[data-hide="alert"]').on('click', function() {
+    $(this).closest('.alert').addClass('d-none')
+  })
+
+
+  // add user submit button
   $('#submit_add').on('click',function() {
     var form_raw = $('#add_form').serializeArray()
     var form_obj = {}
